@@ -1,0 +1,11 @@
+name: Deploy to Balena
+on: push
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: balena-io/deploy-to-balena-action@v2
+        with:
+          balena_token: ${{ secrets.BALENA_TOKEN }}
+          fleet: neon-covenant-balenafleet

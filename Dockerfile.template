@@ -1,0 +1,19 @@
+{{#if (eq arch "amd64")}}
+FROM balenalib/amd64-debian:bullseye‑run
+{{/if}}
+{{#if (eq arch "aarch64")}}
+FROM balenalib/aarch64‑debian:bullseye‑run
+{{/if}}
+{{#if (eq arch "armv7hf")}}
+FROM balenalib/armv7hf‑debian:bullseye‑run
+{{/if}}
+ARG BALENA_MACHINE_NAME
+ENV DEVICE_NAME=${BALENA_MACHINE_NAME}
+ENV ARCH={{arch}}
+RUN apt-get update && apt-get install -y curl bash ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+COPY . /app
+WORKDIR /app
+RUN chmod +x ./start.sh
+RUN echo "🔧 Building for $DEVICE_NAME ($ARCH)"
+CMD ["./start.sh"]
