@@ -1,0 +1,20 @@
+name: Release & Notify
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Telegram
+        uses: appleboy/telegram-action@v0.3.0
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message: "📦 New release ${{ github.ref_name }} deployed to Balena!"
+      - name: Notify Discord
+        uses: ilshidur/action-discord@v2
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
+          message: "📦 New release **${{ github.repository }}** was tagged `${{ github.ref_name }}` and deployed!"

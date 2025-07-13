@@ -1,0 +1,10 @@
+version: '2.1'
+services:
+  app:
+    build: .
+    restart: always
+  sidecar:
+    image: alpine
+    command: ["sh", "-c", "while true; do echo '[sidecar] running'; sleep 30; done"]
+    depends_on: [app]
+    restart: on-failure
